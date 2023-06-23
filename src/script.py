@@ -62,7 +62,7 @@ def predict_outcomes(df):
     
     # Load your trained model from the models directory
     model_path = os.path.join(os.path.dirname(__file__), "..", "models", "model.joblib")
-    model = load(model_path)
+    model = load(model_path) 
 
     # Use your trained model for prediction
     predictions = model.predict(df)

@@ -9,7 +9,7 @@ be a data frame with two columns: nomem_encr and outcome. The nomem_encr column
 should contain the nomem_encr column from the input data frame. The outcome
 column should contain the predicted outcome for each nomem_encr. The outcome
 should be 0 (no child) or 1 (having a child).
-
+ 
 The script can be run from the command line using the following command:
 
 python script.py input_path 

@@ -54,20 +54,27 @@ def predict_outcomes(df):
     # individual did not have a child during 2020-2022, while '1' implies that
     # they did.
 
+     # Dictionary used
+    dict_kids = {'None': 0, 'One child': 1, 'Two children': 2, 'Three children': 3, 'Four children': 4, 'Five children': 5, 'Six children': 6}
+    
     # Keep 
-    keepcols = ['burgstat2019', 'leeftijd2019', 'woonvorm2019', 'oplmet2019', 'aantalki2019']
-    nomem_encr = df["nomem_encr"]
+    keepcols = ['oplmet2019', 'gebjaar', 'geslacht', 'aantalki2019','woonvorm2019'] #"belbezig2019", "leeftijd2019", "burgstat2019", "aantalki2019", "woonvorm2019"
+    #keepcols =  ['oplmet2019', 'gebjaar', 'geslacht', 'aantalki2019']
+    results = df[["nomem_encr"]]
     
     df = df.loc[:, keepcols]
-    
+    df["aantalki2019"] = df["aantalki2019"].map(dict_kids)
+                            
     # Load your trained model from the models directory
     model_path = os.path.join(os.path.dirname(__file__), "..", "models", "model.joblib")
-    model = load(model_path) 
+    model = load(model_path)
 
     # Use your trained model for prediction
-    predictions = model.predict(df)
-    # Return the result as a Pandas DataFrame with the columns "nomem_encr" and "prediction"
-    return pd.concat([nomem_encr, pd.Series(predictions, name="prediction")], axis=1)
+    results.loc[:, "prediction"] = model.predict(df)
+
+    #If you use predict_proba to get a probability and a different threshold
+    #df["prediction"] = (df["prediction"] >= 0.5).astype(int)
+    return results
 
 
 def predict(input_path, output):

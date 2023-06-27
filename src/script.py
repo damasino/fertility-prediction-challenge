@@ -58,8 +58,13 @@ def predict_outcomes(df):
     dict_kids = {'None': 0, 'One child': 1, 'Two children': 2, 'Three children': 3, 'Four children': 4, 'Five children': 5, 'Six children': 6}
     
     # Keep 
-    keepcols = ['oplmet2019', 'gebjaar', 'geslacht', 'aantalki2019','woonvorm2019'] #"belbezig2019", "leeftijd2019", "burgstat2019", "aantalki2019", "woonvorm2019"
-    #keepcols =  ['oplmet2019', 'gebjaar', 'geslacht', 'aantalki2019']
+    keepcols = ['gebjaar', 'geslacht', 'leeftijd2019',
+            'aantalhh2019','partner2019', 'sted2019', 'belbezig2019', 
+            'nettohh_f2019', 'oplmet2019', 'herkomstgroep2019',
+            'burgstat2019', 'woonvorm2019', 'aantalki2019', 'cf19l128',
+           'cf19l131','cf19l132','cf19l133','cf19l134','woning2019', 
+            'cf19l456', 'cw19l522', 'cr19l143', 'cr19l090',
+            'cf19l483', 'cf19l484', 'cf19l485', 'cf19l486', 'cf19l487', 'cf19l488']
     results = df[["nomem_encr"]]
     
     df = df.loc[:, keepcols]

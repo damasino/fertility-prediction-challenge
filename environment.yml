@@ -3,7 +3,7 @@ channels:
   - defaults
 dependencies:
   - pandas>=1.5
-  - scikit-learn=2.1
+  - scikit-learn=1.2.1
   - joblib>=1.1
   - matplotlib>=3.7
 

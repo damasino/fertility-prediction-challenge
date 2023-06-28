@@ -58,17 +58,39 @@ def predict_outcomes(df):
     dict_kids = {'None': 0, 'One child': 1, 'Two children': 2, 'Three children': 3, 'Four children': 4, 'Five children': 5, 'Six children': 6}
     
     # Keep 
-    keepcols = ['gebjaar', 'geslacht', 'leeftijd2019',
-            'aantalhh2019','partner2019', 'sted2019', 'belbezig2019', 
-            'nettohh_f2019', 'oplmet2019', 'herkomstgroep2019',
-            'burgstat2019', 'woonvorm2019', 'aantalki2019', 'cf19l128',
-           'cf19l131','cf19l132','cf19l133','cf19l134','woning2019', 
-            'cf19l456', 'cw19l522', 'cr19l143', 'cr19l090',
-            'cf19l483', 'cf19l484', 'cf19l485', 'cf19l486', 'cf19l487', 'cf19l488']
+    keepcols = ['positie2019','positie2018','gebjaar', 'geslacht','aantalhh2019', 'sted2019', 
+            'nettohh_f2019', 'oplmet2019', 'herkomstgroep2019', 'cf19l128','cf19l129',
+            'cf19l130', 'cf19l131','cf19l132','woning2019', 'woning2018', 
+            'cf19l456', 'cf19l457', 'cf19l458', 'cf19l459', 'cw19l522', 'cr19l143', 
+            'cf19l483', 'cf19l484', 'cf19l485', 'cf19l486', 'cf19l487', 'cf19l488',
+           'wave2008', 'wave2014', 'wave2019','aantalki2017','aantalki2018',
+            'partner2018','partner2019', 'belbezig2019','belbezig2018','ch19l178',
+           'cp19k118', 'cp19k021', 'cp19k056']
     results = df[["nomem_encr"]]
     
     df = df.loc[:, keepcols]
-    df["aantalki2019"] = df["aantalki2019"].map(dict_kids)
+    
+    df["aantalki2018"] = df["aantalki2018"].map(dict_kids)
+    df["aantalki2017"] = df["aantalki2017"].map(dict_kids)
+    #Create new variables about changes in partner status or number of kids (indicators)
+    df['change_kids'] = (df['aantalki2018'].fillna(-1) != df['aantalki2017'].fillna(-1)) & (~df['aantalki2018'].isna()) & (~df['aantalki2017'].isna())
+    #Change partner status
+    df['change_partner'] = (df['partner2019'].fillna(-1) != df['partner2018'].fillna(-1)) & (~df['partner2019'].isna()) & (~df['partner2018'].isna())
+    #Change in household position
+    df['change_householdPos'] = (df['positie2019'].fillna(-1) != df['positie2018'].fillna(-1)) & (~df['positie2019'].isna()) & (~df['positie2018'].isna())
+    #Change in employment
+    df['change_jobs'] = (df['belbezig2019'].fillna(-1) != df['belbezig2018'].fillna(-1)) & (~df['belbezig2019'].isna()) & (~df['belbezig2018'].isna())
+    #Change in housing
+    df['change_house'] = (df['woning2019'].fillna(-1) != df['woning2018'].fillna(-1)) & (~df['woning2019'].isna()) & (~df['woning2018'].isna())
+
+    wave_cols = ['wave2008', 'wave2014', 'wave2019']#
+    df[wave_cols] = df[wave_cols].fillna(0)
+    df[wave_cols] = df[wave_cols].astype('object')
+
+    # make sure missing child birth age is filled with different value
+    child_cols = ['cf19l456', 'cf19l457','cf19l458','cf19l459']
+    df[child_cols] = df[child_cols].fillna(0)
+    df[child_cols] = df[child_cols].astype('object')
                             
     # Load your trained model from the models directory
     model_path = os.path.join(os.path.dirname(__file__), "..", "models", "model.joblib")

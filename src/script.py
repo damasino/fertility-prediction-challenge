@@ -54,7 +54,42 @@ def predict_outcomes(df):
     # individual did not have a child during 2020-2022, while '1' implies that
     # they did.
 
-     # Dictionary used
+      fertIntCols=['cf08a128','cf09b128','cf10c128', 'cf11d128', 'cf12e128', 'cf13f128', 
+              'cf14g128','cf15h128','cf16i128','cf17j128', 'cf18k128', 'cf19l128']
+    df2 = df.loc[:, fertIntCols]
+    dataFertInt = df2.fillna(method='ffill', axis=1)
+    df.loc[:,'cf19l128'] = dataFertInt['cf19l128']
+
+    fertNumCols=['cf08a129','cf09b129','cf10c129', 'cf11d129', 'cf12e129', 'cf13f129', 
+              'cf14g129','cf15h129','cf16i129','cf17j129', 'cf18k129', 'cf19l129']
+
+    df2 = df.loc[:, fertNumCols]
+    dataFertNum = df2.fillna(method='ffill', axis=1)
+    df.loc[:,'cf19l129'] = dataFertNum['cf19l129']
+
+    fertSoonCols=['cf08a130','cf09b130','cf10c130', 'cf11d130', 'cf12e130', 'cf13f130', 
+             'cf14g130','cf15h130','cf16i130','cf17j130', 'cf18k130', 'cf19l130']
+    df2 = df.loc[:, fertSoonCols]
+    dataFertSoon = df2.fillna(method='ffill', axis=1)
+    df.loc[:,'cf19l130'] = dataFertSoon['cf19l130']
+
+
+    kidCols = ['aantalki2007','aantalki2008','aantalki2009','aantalki2010','aantalki2011','aantalki2012',
+                'aantalki2013', 'aantalki2014', 'aantalki2015', 'aantalki2016', 'aantalki2017', 
+                'aantalki2018']
+
+    df2 = df.loc[:, kidCols]
+    dataKids = df2.fillna(method='ffill', axis=1)
+    df.loc[:,'aantalki2018'] = dataKids['aantalki2018']
+    df.loc[:,'aantalki2017'] = dataKids['aantalki2017']
+
+    relationCols=['cf08a029','cf09b029','cf10c029', 'cf11d029', 'cf12e029', 'cf13f029', 
+             'cf14g029','cf15h029','cf16i029','cf17j029', 'cf18k029', 'cf19l029']
+    df2 = df.loc[:, relationCols]
+    relationSoon = df2.fillna(method='ffill', axis=1)
+    df.loc[:,'cf19l029'] = relationSoon['cf19l029']
+    
+    # Dictionary used
     dict_kids = {'None': 0, 'One child': 1, 'Two children': 2, 'Three children': 3, 'Four children': 4, 'Five children': 5, 'Six children': 6}
     
     # Keep 
@@ -65,7 +100,7 @@ def predict_outcomes(df):
             'cf19l483', 'cf19l484', 'cf19l485', 'cf19l486', 'cf19l487', 'cf19l488',
            'wave2008', 'wave2014', 'wave2019','aantalki2017','aantalki2018',
             'partner2018','partner2019', 'belbezig2019','belbezig2018','ch19l178',
-           'cp19k118', 'cp19k021', 'cp19k056']
+           'cp19k118', 'cp19k021', 'cp19k056', 'cf19l029', 'burgstat2019','woonvorm2019']
     results = df[["nomem_encr"]]
     
     df = df.loc[:, keepcols]
@@ -101,7 +136,7 @@ def predict_outcomes(df):
 
     #If you use predict_proba to get a probability and a different threshold
     #df["prediction"] = (df["prediction"] >= 0.5).astype(int)
-    return results
+    return results                    
 
 
 def predict(input_path, output):

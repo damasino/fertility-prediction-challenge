@@ -54,8 +54,8 @@ def predict_outcomes(df):
     # individual did not have a child during 2020-2022, while '1' implies that
     # they did.
 
-      fertIntCols=['cf08a128','cf09b128','cf10c128', 'cf11d128', 'cf12e128', 'cf13f128', 
-              'cf14g128','cf15h128','cf16i128','cf17j128', 'cf18k128', 'cf19l128']
+    fertIntCols=['cf08a128','cf09b128','cf10c128', 'cf11d128', 'cf12e128', 'cf13f128',
+                 'cf14g128','cf15h128','cf16i128','cf17j128', 'cf18k128', 'cf19l128']
     df2 = df.loc[:, fertIntCols]
     dataFertInt = df2.fillna(method='ffill', axis=1)
     df.loc[:,'cf19l128'] = dataFertInt['cf19l128']
